@@ -1,7 +1,18 @@
 const express = require("express");
 const app = express();
+const peopleRouter = require("./routes/people")
 const { products } = require("./data");
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+function logger(req, res, next) {
+  const method = req.method;
+  const url = req.url;
+  const currentTime = new Date().toLocaleString();
+  console.log(`[${currentTime}] ${method} ${url}`);
+  next();
+}
 app.listen(3000, () => {
   console.log("server is listening on port 3000");
 });
@@ -43,4 +54,13 @@ app.get("/api/v1/query", (req, res) => {
   res.json(filteredProducts);
 });
 
-app.use(express.static("./public"));
+// app.get('/', logger, (req, res) => {
+//   console.log('logger worked!')
+// })
+
+app.use("/api/v1/people", peopleRouter);
+
+app.use(logger);
+
+app.use(express.static("./methods-public"));
+

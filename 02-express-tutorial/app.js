@@ -6,10 +6,6 @@ app.listen(3000, () => {
   console.log("server is listening on port 3000");
 });
 
-app.all("*", (req, res) => {
-  res.status(404).send("<h1> Resource not found</h1>");
-});
-
 app.get("/api/v1/test", (req, res) => {
   res.json({ message: "It worked!" });
 });
@@ -52,3 +48,7 @@ app.get("/api/v1/query", (req, res) => {
 });
 
 app.use(express.static("./public"));
+
+app.all("*", (req, res) => {
+  res.status(404).send("<h1> Resource not found</h1>");
+});

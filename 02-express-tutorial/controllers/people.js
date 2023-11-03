@@ -44,10 +44,28 @@ const deletePerson = (req, res) => {
       .json({ success: false, message: "Person not found" });
   }
 
-  const updatedPeople = people.filter((person)=> {
-    return parseInt(person.id) !== id
-  })
-  res.json(updatedPeople);
+  people.splice(index, 1);
+  res.json(people);
 };
 
-module.exports = { getPeople, getPerson, addPeople, deletePerson };
+const updatePerson = (req, res) => {
+  const id = parseInt(req.params.id);
+  const person = people.find((p) => p.id === id);
+
+  if (!person) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Person not found" });
+  }
+
+  person.name = req.body.name;
+  res.json(people);
+};
+
+module.exports = {
+  getPeople,
+  getPerson,
+  addPeople,
+  deletePerson,
+  updatePerson,
+};
